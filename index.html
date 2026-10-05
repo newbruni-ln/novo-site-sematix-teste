@@ -187,6 +187,44 @@
   footer .addr{color:var(--muted); font-size:0.88rem; line-height:1.6;}
   .footer-links{display:flex; gap:28px; font-size:0.88rem; color:var(--muted);}
   .footer-links a:hover{color:var(--ink);}
+
+  /* MODAL DE CONTATO */
+  .modal-overlay{
+    position:fixed; inset:0; z-index:200;
+    background:rgba(8,6,16,0.72);
+    backdrop-filter:blur(3px);
+    display:none;
+    align-items:center; justify-content:center;
+    padding:24px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal-box{
+    position:relative;
+    width:100%; max-width:560px;
+    max-height:88vh;
+    overflow-y:auto;
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:48px 32px 32px;
+  }
+  .modal-close{
+    position:absolute; top:14px; right:14px;
+    width:36px; height:36px;
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--line);
+    border-radius:50%;
+    background:transparent;
+    color:var(--muted);
+    font-size:1.1rem;
+    line-height:1;
+    cursor:pointer;
+    transition:border-color .15s, color .15s;
+  }
+  .modal-close:hover{border-color:var(--violet-soft); color:var(--ink);}
+  .modal-box h3{font-size:1.25rem; margin-bottom:6px;}
+  .modal-box .modal-sub{color:var(--muted); font-size:0.92rem; margin-bottom:22px;}
+  body.modal-locked{overflow:hidden;}
 </style>
 </head>
 <body>
@@ -200,7 +238,7 @@
       <a href="#evolucao">Modelo</a>
       <a href="#contato">Contato</a>
     </div>
-    <a class="nav-cta" href="#contato">Fale com um especialista</a>
+    <a class="nav-cta" href="#" onclick="return openContactModal(event)">Fale com um especialista</a>
   </div>
 </nav>
 
@@ -211,7 +249,7 @@
       <h1>Projetamos, construímos e operamos Empresas Inteligentes.</h1>
       <p>Transformamos dados e inteligência artificial em infraestrutura real de decisão — orquestrando pessoas, agentes e sistemas em escala, não apenas tecnologia isolada.</p>
       <div class="hero-ctas">
-        <a class="btn-primary" href="#contato">Fale com nossos especialistas</a>
+        <a class="btn-primary" href="#" onclick="return openContactModal(event)">Fale com nossos especialistas</a>
         <a class="btn-ghost" href="#plataforma">Ver a plataforma</a>
       </div>
     </div>
@@ -336,6 +374,48 @@
     </div>
   </div>
 </footer>
+
+<div class="modal-overlay" id="contactModal">
+  <div class="modal-box">
+    <button type="button" class="modal-close" aria-label="Fechar" onclick="closeContactModal()">&times;</button>
+    <h3>Fale com um especialista</h3>
+    <p class="modal-sub">Preencha seus dados e nosso time entra em contato.</p>
+    <div role="main" id="forms_site_newco-5e9b535053c2ab20fd08"></div>
+  </div>
+</div>
+
+<script type="text/javascript" src="https://d335luupugsy2.cloudfront.net/js/rdstation-forms/stable/rdstation-forms.min.js"></script>
+<script type="text/javascript">
+  var rdFormLoaded = false;
+
+  function openContactModal(e){
+    if(e) e.preventDefault();
+    var overlay = document.getElementById('contactModal');
+    overlay.classList.add('open');
+    document.body.classList.add('modal-locked');
+
+    if(!rdFormLoaded){
+      new RDStationForms('forms_site_newco-5e9b535053c2ab20fd08', 'null').createForm();
+      rdFormLoaded = true;
+    }
+    return false;
+  }
+
+  function closeContactModal(){
+    document.getElementById('contactModal').classList.remove('open');
+    document.body.classList.remove('modal-locked');
+  }
+
+  // fecha clicando fora da caixa do formulário
+  document.getElementById('contactModal').addEventListener('click', function(e){
+    if(e.target === this) closeContactModal();
+  });
+
+  // fecha com a tecla ESC
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeContactModal();
+  });
+</script>
 
 </body>
 </html>
